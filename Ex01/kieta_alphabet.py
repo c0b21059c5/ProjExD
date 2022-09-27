@@ -19,11 +19,11 @@ def shutudai():
     hyouzilist = sample(taisyoulist, num_hyouzi)
     kessonlist = list(set(taisyoulist)-set(hyouzilist))
 
-    print("対象")
+    print("対象文字")
     print(taisyoulist)
-    print("表示")
+    print("表示文字")
     print(hyouzilist)
-    print("欠損")
+    print("欠損文字（デバック用）")
     print(kessonlist)
 
 
@@ -34,6 +34,7 @@ def shutudai():
             a=input(str(i+1)+"つ目の文字を入力してください")
             if a not in kessonlist:
                 print("不正解です")
+                shutudai()
     else:
         print("不正解です。またチャレンジしてください")
 
