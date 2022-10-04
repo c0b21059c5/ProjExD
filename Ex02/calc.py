@@ -26,7 +26,7 @@ def click_clear(event):
 r=1
 c=0
 
-#ACボタンの追加
+#ACボタンの追加 
 btn = tk.Button(root, text=f"AC", font=("Times New Roman", 30), width=13, height=2)
 btn.bind("<1>", click_clear)
 btn.grid(row=r, column=c, columnspan=3)
