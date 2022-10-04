@@ -27,9 +27,9 @@ r=1
 c=0
 
 #ACボタンの追加
-btn = tk.Button(root, text=f"AC", font=("Times New Roman", 30), width=4, height=2)
+btn = tk.Button(root, text=f"AC", font=("Times New Roman", 30), width=13, height=2)
 btn.bind("<1>", click_clear)
-btn.grid(row=r, column=c)
+btn.grid(row=r, column=c, columnspan=3)
 
 #.ボタンの追加
 btn = tk.Button(root, text=".", font=("Times New Roman", 30), width=4, height=2)
@@ -40,9 +40,14 @@ btn.grid(row=5, column=2)
 numbers = list(range(9, -1, -1))
 operators = ["/", "*", "-", "+"]
 for i, num in enumerate(numbers, 1):
-    btn = tk.Button(root, text=f"{num}", font=("Times New Roman", 30), width=4, height=2)
     btn.bind("<1>", button_click)
-    btn.grid(row=r+1, column=c)
+    if num == 0:
+        
+        btn = tk.Button(root, text=f"{num}", font=("Times New Roman", 30), width=9, height=2)
+        btn.grid(row=r+1, column=c, columnspan=2)
+    else:    
+        btn = tk.Button(root, text=f"{num}", font=("Times New Roman", 30), width=4, height=2)
+        btn.grid(row=r+1, column=c)
     c += 1
     if i%3 == 0:
         r += 1
