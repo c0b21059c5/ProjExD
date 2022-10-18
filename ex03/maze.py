@@ -5,7 +5,7 @@ import maze_maker as mm
 import sys
 
 
-#練習5
+#練習5 
 def key_down(event):
     global key
     key = event.keysym
