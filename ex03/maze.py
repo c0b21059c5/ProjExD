@@ -4,15 +4,18 @@ import tkinter.messagebox as tkm
 import maze_maker as mm
 import sys
 
+
 #練習5
 def key_down(event):
     global key
     key = event.keysym
 
+
 #練習6
 def key_up(event):
     global key
     key = ""
+
 
 #練習7、11,12
 def main_proc():
@@ -68,6 +71,7 @@ def main_proc():
         sys.exit()
 
     root.after(100, main_proc)
+
 
 if __name__ == "__main__":
     
