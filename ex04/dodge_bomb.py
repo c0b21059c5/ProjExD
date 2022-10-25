@@ -40,7 +40,7 @@ def main():
     bomb_rct.centery = randint(0, scrn_rct.height)
     vx, vy = +1, +1
 
-    #爆弾2
+    #爆弾2　
     bomb2_sfc = pg.Surface((20, 20)) # 空のSurface
     bomb2_sfc.set_colorkey((0, 0, 0)) # 四隅の黒い部分を透過させる
     pg.draw.circle(bomb2_sfc, (255 , 0, 255), (10, 10), 10) # 円を描く
