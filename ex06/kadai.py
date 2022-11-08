@@ -16,7 +16,7 @@ class Screen:
         self.sfc.blit(self.bgi_sfc, self.bgi_rct)
 
 
-class Bird:
+class Bird: #こんかとんクラス
     key_delta = {
         pg.K_UP:    [0, -1],
         pg.K_DOWN:  [0, +1],
@@ -39,13 +39,13 @@ class Bird:
             if key_states[key]:
                 self.rct.centerx += delta[0]
                 self.rct.centery += delta[1]
-                if check_bound(self.rct, scr.rct) != (+1, +1):
+                if check_bound(self.rct, scr.rct) != (+1, +1): #壁との反射
                     self.rct.centerx -= delta[0]
                     self.rct.centery -= delta[1]
         self.blit(scr) # =scr.sfc.blit(self.sfc, self.rct)
 
 
-class Bomb:
+class Bomb: #爆弾クラス
     def __init__(self, color, radius, vxy, scr:Screen):
         self.sfc = pg.Surface((radius*2, radius*2)) # 空のSurface
         self.sfc.set_colorkey((0, 0, 0)) # 四隅の黒い部分を透過させる
@@ -67,11 +67,11 @@ class Bomb:
     def set_bkd(self, vxy):
         self.vx, self.vy = vxy
 
-class Esa:
+class Esa: #エサクラス
     def __init__(self, color, radius, scr:Screen):
         self.sfc = pg.Surface((radius*2, radius*2)) # 空のSurface
         self.sfc.set_colorkey((0, 0, 0)) # 四隅の黒い部分を透過させる
-        pg.draw.circle(self.sfc, color, (radius, radius), radius) # 爆弾用の円を描く
+        pg.draw.circle(self.sfc, color, (radius, radius), radius) # エサ用の円を描く
         self.rct = self.sfc.get_rect()
         self.rct.centerx = randint(0, scr.rct.width)
         self.rct.centery = randint(0, scr.rct.height)
@@ -82,11 +82,11 @@ class Esa:
     def update(self, scr:Screen):
         self.blit(scr)
 
-class Move_Esa:
+class Move_Esa: #動くエサクラス
     def __init__(self, color, radius, vxy, scr:Screen):
         self.sfc = pg.Surface((radius*2, radius*2)) # 空のSurface
         self.sfc.set_colorkey((0, 0, 0)) # 四隅の黒い部分を透過させる
-        pg.draw.circle(self.sfc, color, (radius, radius), radius) # 爆弾用の円を描く
+        pg.draw.circle(self.sfc, color, (radius, radius), radius) # エサ用の円を描く
         self.rct = self.sfc.get_rect()
         self.rct.centerx = randint(0, scr.rct.width)
         self.rct.centery = randint(0, scr.rct.height)
@@ -102,7 +102,7 @@ class Move_Esa:
         self.vy *= tate
         self.blit(scr)
 
-class Score:
+class Score: #スコアクラス
     def __init__(self, x, y):
         self.sfc = pg.Surface((100, 100))
         self.sfc.set_colorkey((0, 0, 0))
@@ -111,23 +111,15 @@ class Score:
         self.score = 0
         self.bom_num = 0
         (self.x, self.y) = (x, y)
-    def blit(self, scr:Screen):
+    def blit(self, scr:Screen): #スコアを表示
         img = self.sysfont.render("SCORE:"+str(self.score), True, (255, 0, 0))
         scr.sfc.blit(img, (self.x, self.y))
-    def add_score(self, a):
+    def add_score(self, a): #スコアを加算
         self.score += a
     def get_score(self):
         return self.score
 
-class GameClear:
-    def __init__(self, img):
-        self.sfc = pg.image.load(img)
-        self.rct = self.sfc.get_rect()
-        
-    def blit(self, scr:Screen):
-        self.sfc.blit(scr)
-
-def check_bound(obj_rct, scr_rct):
+def check_bound(obj_rct, scr_rct): #壁との反射の設定
     """
     obj_rct：こうかとんrct，または，爆弾rct
     scr_rct：スクリーンrct
@@ -178,12 +170,12 @@ def main():
 
         move_esa.update(scr)
 
-        if kkt.rct.colliderect(esa.rct):
-            score.add_score(1)
-            esa = Esa((0, 255, 0), 10, scr)
+        if kkt.rct.colliderect(esa.rct): #動かないエサとの衝突したとき
+            score.add_score(1) #1ポイント加算
+            esa = Esa((0, 0, 255), 10, scr)
 
-        if kkt.rct.colliderect(move_esa.rct):
-            score.add_score(3)
+        if kkt.rct.colliderect(move_esa.rct): #動くエサとの衝突したとき
+            score.add_score(3) #3ポイント加算
             move_esa = Move_Esa((0, 0, 255), 10, (+2, +2),  scr)
 
         # 練習8
@@ -192,14 +184,10 @@ def main():
                 print(score)
                 return
          
-        for i in range(10):
-            if score.get_score() >= 10*i:    
+        for i in range(10): #爆弾を増やす設定
+            if score.get_score() >= 10*i: #スコアが10増えるごとに爆弾が1増える
                 if len(bomblist) == i:
                     bomblist.append(Bomb((255, 0, 0), 10, (+1, +1), scr))
-
-        if score.get_score() >= 100:
-            gameclear=GameClear("fig/gameclear.png")
-            gameclear.blit(scr)
 
         pg.display.update() #練習2
         clock.tick(1000)
